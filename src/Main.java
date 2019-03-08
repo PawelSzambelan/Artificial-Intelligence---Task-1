@@ -5,6 +5,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        System.out.println("mesage");
+
         String fileName = "ai-lab1-ttp_data/student/trivial_0.ttp";
         ArrayList<City> listOfCities = new ArrayList<>();
         ArrayList<Item> listOfItems = new ArrayList<>();

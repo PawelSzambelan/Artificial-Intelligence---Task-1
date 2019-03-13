@@ -1,25 +1,48 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
         String fileName = "ai-lab1-ttp_data/student/trivial_0.ttp";
-        ArrayList<City> listOfCities = new ArrayList<>();
-        ArrayList<Item> listOfItems = new ArrayList<>();
+        List<City> listOfCities = new ArrayList<>();
+        List<Item> listOfItems = new ArrayList<>();
+        int KnapsackCapacity;
 
         Loader loader = new Loader();
-        System.out.println("Cities");
+        KnapsackCapacity = loader.loadKnapsackCapacity(fileName);
+        //System.out.println("Cities");
         loader.loadCitiesFromFile(fileName, listOfCities);
-        System.out.println("Items");
+        //System.out.println("Items");
         loader.loadItemsFromFile(fileName, listOfItems);
+        //load items to cities
+        loader.loadItemsToCities(listOfCities, listOfItems);
+        /*
+        //check if items are in correct cities !!
+        for(City city:listOfCities){
+            System.out.println("City number " + city.getCityNumber());
+            for (Item item:city.listOfItems){
+                System.out.println("Item " + item.cityNumber);
+            }
+        }
+        */
 
         //Knapsack Capacity
-        System.out.println(loader.loadKnapsackCapacity(fileName));
+        System.out.println("Knapsack Capacity = " + KnapsackCapacity);
 
         //na razie nie ważne
-        loader.tsp(Loader.creatingMatrix(listOfCities),listOfCities);
+        //loader.tsp(Loader.creatingMatrix(listOfCities),listOfCities);
+
+        //population
+        Population population = new Population();
+        population.initialise(listOfCities);
+        //check if roads in population are random
+        population.printingPopulation();
+
+        GA ga = new GA();
+        ga.creatingListOfItemsToTake(listOfItems, population.thievesPopulation);
 
     }
 }

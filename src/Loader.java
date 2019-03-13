@@ -5,12 +5,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 
 public class Loader {
 
-    public void loadCitiesFromFile(String fileName, ArrayList<City> listOfCities) throws FileNotFoundException {
+    public void loadCitiesFromFile(String fileName, List<City> listOfCities) throws FileNotFoundException {
 
         String startLine = "NODE_COORD_SECTION	(INDEX, X, Y): ";
         String endLine = "ITEMS SECTION	(INDEX, PROFIT, WEIGHT, ASSIGNED NODE NUMBER): ";
@@ -26,11 +27,13 @@ public class Loader {
             String nextLine;
 
             //read to startLine
-            while (!((nextLine = reader.readLine()).equals(startLine))) {}
+            while (!((nextLine = reader.readLine()).equals(startLine))) {
+            }
 
             //read until endLine
             while (!((nextLine = reader.readLine()).equals(endLine))) {
-                System.out.println(nextLine);
+                //wyświetlanie miast
+                //System.out.println(nextLine);
                 lines = nextLine.split("\t");
                 listOfCities.add(new City(Integer.parseInt(lines[0]), Double.valueOf(lines[1]), Double.valueOf(lines[2])));
             }
@@ -39,7 +42,7 @@ public class Loader {
         }
     }
 
-    public static int[][] creatingMatrix(ArrayList<City> cities) {
+    public static int[][] creatingMatrix(List<City> cities) {
 
         System.out.println("\nDistances matrix");
         int matrixSize = cities.size();
@@ -55,7 +58,7 @@ public class Loader {
         return matrix_of_distances;
     }
 
-    public void loadItemsFromFile(String fileName, ArrayList<Item> listOfItems) throws FileNotFoundException {
+    public void loadItemsFromFile(String fileName, List<Item> listOfItems) throws FileNotFoundException {
 
         String startLine = "ITEMS SECTION	(INDEX, PROFIT, WEIGHT, ASSIGNED NODE NUMBER): ";
 
@@ -70,11 +73,13 @@ public class Loader {
             String nextLine;
 
             //read to startLine
-            while (!((nextLine = reader.readLine()).equals(startLine))) {}
+            while (!((nextLine = reader.readLine()).equals(startLine))) {
+            }
 
             //read until endLine
             while ((nextLine = reader.readLine()) != null) {
-                System.out.println(nextLine);
+                //wyswietlanie itemow
+                //System.out.println(nextLine);
                 lines = nextLine.split("\t");
                 listOfItems.add(new Item(Integer.parseInt(lines[0]), Integer.parseInt(lines[1]), Integer.parseInt(lines[2]), Integer.parseInt(lines[3])));
             }
@@ -91,8 +96,14 @@ public class Loader {
         return Integer.parseInt(lines[1]);
     }
 
+    public void loadItemsToCities(List<City> listOfCities, List<Item> listOfItems) {
+        for (City city : listOfCities) {
+            city.loadItems(listOfItems);
+        }
+    }
+
     //by nearest neighbour
-    public void tsp(int distancesMatrix[][], ArrayList<City> listOfCities) {
+    public void tsp(int distancesMatrix[][], List<City> listOfCities) {
 
         System.out.println("\nCities in visited order:");
         int totalRoute = 0;

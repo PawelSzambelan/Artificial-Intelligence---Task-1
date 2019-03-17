@@ -19,8 +19,6 @@ public class Thief {
             road.add(city.getCityNumber());
         }
         Collections.shuffle(road);
-        //dodanie na końcu punktu początkowego
-        road.add(road.get(0));
     }
 
 }

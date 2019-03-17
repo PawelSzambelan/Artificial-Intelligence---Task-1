@@ -4,7 +4,6 @@ public class Item implements Comparable {
     private int profit;
     private int weight;
     private int cityNumber;
-    private boolean isTaken;
     private double takingCriterion;
 
     public Item(int index, int profit, int weight, int cityNumber) {
@@ -13,7 +12,6 @@ public class Item implements Comparable {
         this.weight = weight;
         this.cityNumber = cityNumber;
 
-        isTaken = false;
         takingCriterion = (double) profit / (double) weight;
     }
 
@@ -25,6 +23,9 @@ public class Item implements Comparable {
         return takingCriterion;
     }
 
+    public int getWeight() {
+        return weight;
+    }
 
     @Override
     public int compareTo(Object o) {

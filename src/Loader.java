@@ -15,6 +15,7 @@ public class Loader {
 
         String startLine = "NODE_COORD_SECTION	(INDEX, X, Y): ";
         String endLine = "ITEMS SECTION	(INDEX, PROFIT, WEIGHT, ASSIGNED NODE NUMBER): ";
+        //add one city at zero index
 
         var fileReader = new FileReader(fileName);
         var reader = new BufferedReader(fileReader);
@@ -46,12 +47,12 @@ public class Loader {
 
         System.out.println("\nDistances matrix");
         int matrixSize = cities.size();
-        int matrix_of_distances[][] = new int[matrixSize][matrixSize];
+        int matrix_of_distances[][] = new int[matrixSize+1][matrixSize+1];
 
         for (int i = 0; i < matrixSize; i++) {
             for (int j = 0; j < matrixSize; j++) {
-                matrix_of_distances[i][j] = Math.round(cities.get(i).distanceToCity(cities.get(j)));
-                System.out.print(matrix_of_distances[i][j] + "     ");
+                matrix_of_distances[i+1][j+1] = Math.round(cities.get(i).distanceToCity(cities.get(j)));
+                System.out.print(matrix_of_distances[i+1][j+1] + "     ");
             }
             System.out.print("\n");
         }
@@ -94,6 +95,22 @@ public class Loader {
         String line = Files.readAllLines(Paths.get(fileName)).get(4);
         lines = line.split("\t");
         return Integer.parseInt(lines[1]);
+    }
+
+    public double loadMaxSpeed(String fileName) throws IOException {
+
+        String lines[];
+        String line = Files.readAllLines(Paths.get(fileName)).get(6);
+        lines = line.split("\t");
+        return Double.parseDouble(lines[1]);
+    }
+
+    public double loadMinSpeed(String fileName) throws IOException {
+
+        String lines[];
+        String line = Files.readAllLines(Paths.get(fileName)).get(5);
+        lines = line.split("\t");
+        return Double.parseDouble(lines[1]);
     }
 
     public void loadItemsToCities(List<City> listOfCities, List<Item> listOfItems) {

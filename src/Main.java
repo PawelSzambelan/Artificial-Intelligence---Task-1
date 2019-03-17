@@ -9,10 +9,14 @@ public class Main {
         String fileName = "ai-lab1-ttp_data/student/trivial_0.ttp";
         List<City> listOfCities = new ArrayList<>();
         List<Item> listOfItems = new ArrayList<>();
-        int KnapsackCapacity;
+        int knapsackCapacity;
+        double maxSpeed, minSpeed;
 
         Loader loader = new Loader();
-        KnapsackCapacity = loader.loadKnapsackCapacity(fileName);
+        knapsackCapacity = loader.loadKnapsackCapacity(fileName);
+        maxSpeed = loader.loadMaxSpeed(fileName);
+        minSpeed = loader.loadMinSpeed(fileName);
+
         //System.out.println("Cities");
         loader.loadCitiesFromFile(fileName, listOfCities);
         //System.out.println("Items");
@@ -30,7 +34,7 @@ public class Main {
         */
 
         //Knapsack Capacity
-        System.out.println("Knapsack Capacity = " + KnapsackCapacity);
+        System.out.println("Knapsack Capacity = " + knapsackCapacity);
 
         //na razie nie ważne
         //loader.tsp(Loader.creatingMatrix(listOfCities),listOfCities);
@@ -42,7 +46,7 @@ public class Main {
         population.printingPopulation();
 
         GA ga = new GA();
-        ga.creatingListOfItemsToTake(listOfItems, population.thievesPopulation);
+        ga.creatingListOfItemsToTake(listOfItems, listOfCities, population.thievesPopulation, loader.creatingMatrix(listOfCities), knapsackCapacity, maxSpeed, minSpeed);
 
     }
 }

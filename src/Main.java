@@ -23,30 +23,20 @@ public class Main {
         loader.loadItemsFromFile(fileName, listOfItems);
         //load items to cities
         loader.loadItemsToCities(listOfCities, listOfItems);
-        /*
-        //check if items are in correct cities !!
-        for(City city:listOfCities){
-            System.out.println("City number " + city.getCityNumber());
-            for (Item item:city.listOfItems){
-                System.out.println("Item " + item.cityNumber);
-            }
-        }
-        */
 
-        //Knapsack Capacity
-        System.out.println("Knapsack Capacity = " + knapsackCapacity);
-
-        //na razie nie ważne
-        //loader.tsp(Loader.creatingMatrix(listOfCities),listOfCities);
 
         //population
         Population population = new Population();
         population.initialise(listOfCities);
+
         //check if roads in population are random
-        population.printingPopulation();
+        //population.printingPopulation();
 
         GA ga = new GA();
-        ga.creatingListOfItemsToTake(listOfItems, listOfCities, population.thievesPopulation, loader.creatingMatrix(listOfCities), knapsackCapacity, maxSpeed, minSpeed);
+        ga.calculatingFitnesForRandomPopulation(listOfCities, population.thievesPopulation, loader.creatingMatrix(listOfCities), knapsackCapacity, maxSpeed, minSpeed);
+
+        ga.tournament(ga.listOfFitnesResults,population.thievesPopulation);
+
 
     }
 }

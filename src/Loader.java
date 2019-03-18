@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -43,18 +42,18 @@ public class Loader {
         }
     }
 
-    public static int[][] creatingMatrix(List<City> cities) {
+    public int[][] creatingMatrix(List<City> cities) {
 
-        System.out.println("\nDistances matrix");
+        //System.out.println("\nDistances matrix");
         int matrixSize = cities.size();
         int matrix_of_distances[][] = new int[matrixSize+1][matrixSize+1];
 
         for (int i = 0; i < matrixSize; i++) {
             for (int j = 0; j < matrixSize; j++) {
                 matrix_of_distances[i+1][j+1] = Math.round(cities.get(i).distanceToCity(cities.get(j)));
-                System.out.print(matrix_of_distances[i+1][j+1] + "     ");
+                //System.out.print(matrix_of_distances[i+1][j+1] + "     ");
             }
-            System.out.print("\n");
+            //System.out.print("\n");
         }
         return matrix_of_distances;
     }

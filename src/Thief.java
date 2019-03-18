@@ -19,6 +19,8 @@ public class Thief {
             road.add(city.getCityNumber());
         }
         Collections.shuffle(road);
+        //add first city to the end - to finish the route
+        road.add(road.get(0));
     }
 
 }

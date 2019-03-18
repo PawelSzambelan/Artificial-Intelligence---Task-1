@@ -8,13 +8,11 @@ public class City {
     private double y;
     List<Item> listOfItems = new ArrayList<>();
 
-
     public City(int cityNumber, double x, double y) {
         this.cityNumber = cityNumber;
         this.x = x;
         this.y = y;
     }
-
 
     public int getCityNumber() {
         return cityNumber;

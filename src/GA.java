@@ -153,8 +153,30 @@ public class GA {
             Collections.copy(parent1.road, child2.road);
             Collections.copy(parent2.road, child1.road);
         }
-        else return;
     }
 
+    public void swapMutation(List<Thief> ThievesList){
+        double Pm = 0.01;
+        Random rand = new Random();
 
+        for(Thief thief:ThievesList){
+            if (rand.nextDouble() < 0.9) { // <-- 1% of the time.
+
+                int size = thief.road.size() - 1;
+
+                int number1 = rand.nextInt(size-1) + 1;
+                int number2 = rand.nextInt(size-1) + 1;
+
+                //check if random numbers are not the same
+                while (number1 == number2) {
+                    number2 = rand.nextInt(size-1) + 1;
+                }
+
+                //swap
+                int temp = thief.road.get(number1);
+                thief.road.set(number1,thief.road.get(number2));
+                thief.road.set(number2,temp);
+            }
+        }
+    }
 }

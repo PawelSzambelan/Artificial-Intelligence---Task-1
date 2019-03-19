@@ -38,6 +38,9 @@ public class Main {
         System.out.println(thievesToCross.get(0).road);
         System.out.println(thievesToCross.get(1).road);
 
+        ga.swapMutation(thievesToCross);
+
+
 
     }
 }

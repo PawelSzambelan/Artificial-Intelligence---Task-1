@@ -10,6 +10,12 @@ import java.util.Stack;
 
 public class Loader {
 
+    public void loadEverything(String fileName, List<City> listOfCities, List<Item> listOfItems) throws IOException {
+        loadCitiesFromFile(fileName,listOfCities);
+        loadItemsFromFile(fileName,listOfItems);
+        loadItemsToCities(listOfCities,listOfItems);
+    }
+
     public void loadCitiesFromFile(String fileName, List<City> listOfCities) throws FileNotFoundException {
 
         String startLine = "NODE_COORD_SECTION	(INDEX, X, Y): ";

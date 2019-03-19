@@ -46,5 +46,6 @@ public class City {
                 listOfItems.add(item);
             }
         }
+        listOfItems.sort(Item::compareTo);
     }
 }

@@ -7,6 +7,11 @@ public class Thief {
     List<Integer> road;
     List<Item> knapsack;
 
+    public Thief(){
+        road = new ArrayList<>();
+        knapsack = new ArrayList<>();
+    }
+
     public Thief(List<City> listOfCities) {
         road = new ArrayList<>();
         knapsack = new ArrayList<>();

@@ -9,21 +9,16 @@ public class Main {
         String fileName = "ai-lab1-ttp_data/student/trivial_0.ttp";
         List<City> listOfCities = new ArrayList<>();
         List<Item> listOfItems = new ArrayList<>();
-        int knapsackCapacity;
-        double maxSpeed, minSpeed;
+        int knapsackCapacity = 0;
+        double maxSpeed = 0;
+        double minSpeed = 0;
 
+        //loader
         Loader loader = new Loader();
+        loader.loadEverything(fileName, listOfCities, listOfItems);
         knapsackCapacity = loader.loadKnapsackCapacity(fileName);
         maxSpeed = loader.loadMaxSpeed(fileName);
         minSpeed = loader.loadMinSpeed(fileName);
-
-        //System.out.println("Cities");
-        loader.loadCitiesFromFile(fileName, listOfCities);
-        //System.out.println("Items");
-        loader.loadItemsFromFile(fileName, listOfItems);
-        //load items to cities
-        loader.loadItemsToCities(listOfCities, listOfItems);
-
 
         //population
         Population population = new Population();
@@ -35,7 +30,13 @@ public class Main {
         GA ga = new GA();
         ga.calculatingFitnesForRandomPopulation(listOfCities, population.thievesPopulation, loader.creatingMatrix(listOfCities), knapsackCapacity, maxSpeed, minSpeed);
 
-        ga.tournament(ga.listOfFitnesResults,population.thievesPopulation);
+        List<Thief> thievesToCross = ga.tournament(ga.listOfFitnesResults, population.thievesPopulation);
+        System.out.println(thievesToCross.get(0).road);
+        System.out.println(thievesToCross.get(1).road);
+        ga.crossover(thievesToCross);
+
+        System.out.println(thievesToCross.get(0).road);
+        System.out.println(thievesToCross.get(1).road);
 
 
     }

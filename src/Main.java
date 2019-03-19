@@ -19,7 +19,7 @@ public class Main {
         knapsackCapacity = loader.loadKnapsackCapacity(fileName);
         maxSpeed = loader.loadMaxSpeed(fileName);
         minSpeed = loader.loadMinSpeed(fileName);
-
+/*
         //population
         Population population = new Population();
         population.initialise(listOfCities);
@@ -28,7 +28,7 @@ public class Main {
         //population.printingPopulation();
 
         GA ga = new GA();
-        ga.calculatingFitnesForRandomPopulation(listOfCities, population.thievesPopulation, loader.creatingMatrix(listOfCities), knapsackCapacity, maxSpeed, minSpeed);
+        ga.calculatingFitnesForPopulation(listOfCities, population.thievesPopulation, loader.creatingMatrix(listOfCities), knapsackCapacity, maxSpeed, minSpeed);
 
         List<Thief> thievesToCross = ga.tournament(ga.listOfFitnesResults, population.thievesPopulation);
         System.out.println(thievesToCross.get(0).road);
@@ -39,6 +39,9 @@ public class Main {
         System.out.println(thievesToCross.get(1).road);
 
         ga.swapMutation(thievesToCross);
+*/
+        GA gaTest = new GA();
+        gaTest.genetic_algoryth(listOfCities, loader.creatingMatrix(listOfCities),knapsackCapacity,maxSpeed,minSpeed);
 
 
 

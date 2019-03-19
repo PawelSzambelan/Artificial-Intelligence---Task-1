@@ -5,10 +5,11 @@ import java.util.Random;
 
 public class GA {
 
-    protected List<Double> listOfFitnesResults = new ArrayList<>();
+    protected List<Double> listOfFitnesResults;
 
 
-    public void calculatingFitnesForRandomPopulation(List<City> listOfCities, List<Thief> thievesPopulation, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
+    public void calculatingFitnesForPopulation(List<City> listOfCities, List<Thief> thievesPopulation, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
+        listOfFitnesResults = new ArrayList<>();
         double roadTime;
         int distance;
         double actualSpeed;
@@ -47,9 +48,9 @@ public class GA {
             listOfFitnesResults.add(itemsWeightSum - roadTime);
 
         }
-        for (int i = 0; i < listOfFitnesResults.size(); i++) {
-            System.out.println(i + ": " + listOfFitnesResults.get(i));
-        }
+//        for (int i = 0; i < listOfFitnesResults.size(); i++) {
+////            System.out.println(i + ": " + listOfFitnesResults.get(i));
+////        }
     }
 
     public List<Thief> tournament(List<Double> listOfFitnesResults, List<Thief> thievesPopulation) {
@@ -85,7 +86,9 @@ public class GA {
 
             int thiefIndex = tmpList.get(indexTMP);
 
-            listOf2ThieviesToCrossover.add(thievesPopulation.get(thiefIndex));
+            Thief thiefCopy = new Thief();
+            thiefCopy.road.addAll(thievesPopulation.get(thiefIndex).road);
+            listOf2ThieviesToCrossover.add(thiefCopy);
         }
         return listOf2ThieviesToCrossover;
     }
@@ -150,33 +153,73 @@ public class GA {
             child2.road.add(child2.road.get(0));
 
             // copy the parents from the children back into the parents, because crossover functions are in-place!
-            Collections.copy(parent1.road, child2.road);
-            Collections.copy(parent2.road, child1.road);
+//            Collections.copy(parent1.road, child2.road);
+//            Collections.copy(parent2.road, child1.road);
+            TwoThievesToCross.clear();
+            TwoThievesToCross.add(child1);
+            TwoThievesToCross.add(child2);
         }
     }
 
-    public void swapMutation(List<Thief> ThievesList){
+    public void swapMutation(List<Thief> ThievesList) {
         double Pm = 0.01;
         Random rand = new Random();
 
-        for(Thief thief:ThievesList){
-            if (rand.nextDouble() < 0.9) { // <-- 1% of the time.
+        for (Thief thief : ThievesList) {
+            if (rand.nextDouble() < Pm) { // <-- 1% of the time.
 
                 int size = thief.road.size() - 1;
 
-                int number1 = rand.nextInt(size-1) + 1;
-                int number2 = rand.nextInt(size-1) + 1;
+                int number1 = rand.nextInt(size - 1) + 1;
+                int number2 = rand.nextInt(size - 1) + 1;
 
                 //check if random numbers are not the same
                 while (number1 == number2) {
-                    number2 = rand.nextInt(size-1) + 1;
+                    number2 = rand.nextInt(size - 1) + 1;
                 }
 
                 //swap
                 int temp = thief.road.get(number1);
-                thief.road.set(number1,thief.road.get(number2));
-                thief.road.set(number2,temp);
+                thief.road.set(number1, thief.road.get(number2));
+                thief.road.set(number2, temp);
             }
         }
     }
+
+    public void genetic_algoryth(List<City> listOfCities, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
+
+        List<List<Double>> list_with_all_populations_fitneses = new ArrayList<>();
+        int gen = 100;
+
+        //population
+        Population population = new Population();
+        population.initialise(listOfCities);
+
+        calculatingFitnesForPopulation(listOfCities, population.thievesPopulation, distancesMatrix, knapsackCapacity, maxSpeed, minSpeed);
+        list_with_all_populations_fitneses.add(listOfFitnesResults);
+
+        while (list_with_all_populations_fitneses.size() < gen) {
+
+            Population newPopulation = new Population();
+
+            for (int i = 0; i < 50; i++) {
+                List<Thief> thievesToCross = tournament(listOfFitnesResults, population.thievesPopulation);
+                crossover(thievesToCross);
+                swapMutation(thievesToCross);
+
+                newPopulation.thievesPopulation.addAll(thievesToCross);
+            }
+            calculatingFitnesForPopulation(listOfCities, newPopulation.thievesPopulation, distancesMatrix, knapsackCapacity, maxSpeed, minSpeed);
+            list_with_all_populations_fitneses.add(listOfFitnesResults);
+
+            Collections.copy(population.thievesPopulation, newPopulation.thievesPopulation);
+        }
+
+        //System.out.println(list_with_all_populations_fitneses.get(list_with_all_populations_fitneses.size()-1).get(0));
+
+
+    }
+
 }
+
+

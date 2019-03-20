@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -92,7 +94,47 @@ public class GA {
         }
         return listOf2ThieviesToCrossover;
     }
+/*
+    public List<Thief> roulette(List<Double> listOfFitnesResults, List<Thief> thievesPopulation) {
 
+        int Tour = 5;
+        List<Thief> listOf2ThieviesToCrossover = new ArrayList<>();
+        int thievesCountToTakeToCrossover = 2;
+
+        for (int j = 0; j < thievesCountToTakeToCrossover; j++) {
+            List<Integer> tmpList = new ArrayList<>();
+
+            for (int i = 0; i < Tour; i++) {
+                int tmp = (int) (Math.random() * 100);
+                if (!tmpList.contains(tmp))
+                    tmpList.add(tmp);
+            }
+
+            List<Double> choosenFitnes = new ArrayList<>();
+            for (Integer choosen : tmpList) {
+                choosenFitnes.add(listOfFitnesResults.get(choosen));
+            }
+
+            double theBest = Collections.max(choosenFitnes);
+            int indexTMP = 0;
+
+
+            for (Double findingIndexOfMax : choosenFitnes) {
+                if (findingIndexOfMax == theBest) {
+                    indexTMP = choosenFitnes.indexOf(theBest);
+                    break;
+                }
+            }
+
+            int thiefIndex = tmpList.get(indexTMP);
+
+            Thief thiefCopy = new Thief();
+            thiefCopy.road.addAll(thievesPopulation.get(thiefIndex).road);
+            listOf2ThieviesToCrossover.add(thiefCopy);
+        }
+        return listOf2ThieviesToCrossover;
+    }
+*/
     public void crossover(List<Thief> TwoThievesToCross) {
         double Px = 0.7;
         Random rand = new Random();
@@ -215,9 +257,55 @@ public class GA {
             Collections.copy(population.thievesPopulation, newPopulation.thievesPopulation);
         }
 
-        //System.out.println(list_with_all_populations_fitneses.get(list_with_all_populations_fitneses.size()-1).get(0));
+        System.out.println(list_with_all_populations_fitneses.get(list_with_all_populations_fitneses.size() - 1).get(0));
+        listToFile(list_with_all_populations_fitneses);
 
+    }
 
+    public void listToFile(List<List<Double>> list_with_all_populations_fitneses) {
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("Population");
+        builder.append(" ");
+        builder.append("Max");
+        builder.append(" ");
+        builder.append("Min");
+        builder.append(" ");
+        builder.append("Average");
+        builder.append("\n");
+
+        for (int i = 0; i < list_with_all_populations_fitneses.size(); i++) {
+            double max = Collections.max(list_with_all_populations_fitneses.get(i));
+            double min = Collections.min(list_with_all_populations_fitneses.get(i));
+            double average = calculatingTheAverege(list_with_all_populations_fitneses.get(i));
+
+            builder.append(i);
+            builder.append(" ");
+            builder.append((int)max);
+            builder.append(" ");
+            builder.append((int)min);
+            builder.append(" ");
+            builder.append((int)average);
+            builder.append("\n");
+
+        }
+
+        builder.toString();
+        try (PrintWriter out = new PrintWriter("test1.txt")) {
+            out.println(builder);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public double calculatingTheAverege(List<Double> fitnesesList) {
+        double sum = 0;
+        for (Double fitnes : fitnesesList) {
+            sum += fitnes;
+        }
+        return sum / fitnesesList.size();
     }
 
 }

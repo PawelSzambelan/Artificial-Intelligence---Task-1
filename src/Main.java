@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        String fileName = "ai-lab1-ttp_data/student/trivial_0.ttp";
+        String fileName = "ai-lab1-ttp_data/student/hard_0.ttp";
         List<City> listOfCities = new ArrayList<>();
         List<Item> listOfItems = new ArrayList<>();
         int knapsackCapacity = 0;

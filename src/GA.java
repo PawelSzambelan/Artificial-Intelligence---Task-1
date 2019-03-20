@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class GA {
+class GA {
 
-    protected List<Double> listOfFitnesResults;
+    private List<Double> listOfFitnesResults;
 
 
-    public void calculatingFitnesForPopulation(List<City> listOfCities, List<Thief> thievesPopulation, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
+    private void calculatingFitnesForPopulation(List<City> listOfCities, List<Thief> thievesPopulation, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
         listOfFitnesResults = new ArrayList<>();
         double roadTime;
         int distance;
@@ -55,7 +55,7 @@ public class GA {
 ////        }
     }
 
-    public List<Thief> tournament(List<Double> listOfFitnesResults, List<Thief> thievesPopulation) {
+    private List<Thief> tournament(List<Double> listOfFitnesResults, List<Thief> thievesPopulation) {
 
         int Tour = 5;
         List<Thief> listOf2ThieviesToCrossover = new ArrayList<>();
@@ -135,7 +135,7 @@ public class GA {
         return listOf2ThieviesToCrossover;
     }
 */
-    public void crossover(List<Thief> TwoThievesToCross) {
+    private void crossover(List<Thief> TwoThievesToCross) {
         double Px = 0.7;
         Random rand = new Random();
 
@@ -203,7 +203,7 @@ public class GA {
         }
     }
 
-    public void swapMutation(List<Thief> ThievesList) {
+    private void swapMutation(List<Thief> ThievesList) {
         double Pm = 0.01;
         Random rand = new Random();
 
@@ -228,7 +228,7 @@ public class GA {
         }
     }
 
-    public void genetic_algoryth(List<City> listOfCities, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
+    void genetic_algoryth(List<City> listOfCities, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
 
         List<List<Double>> list_with_all_populations_fitneses = new ArrayList<>();
         int gen = 100;
@@ -262,7 +262,7 @@ public class GA {
 
     }
 
-    public void listToFile(List<List<Double>> list_with_all_populations_fitneses) {
+    private void listToFile(List<List<Double>> list_with_all_populations_fitneses) {
 
         StringBuilder builder = new StringBuilder();
 
@@ -300,7 +300,7 @@ public class GA {
 
     }
 
-    public double calculatingTheAverege(List<Double> fitnesesList) {
+    private double calculatingTheAverege(List<Double> fitnesesList) {
         double sum = 0;
         for (Double fitnes : fitnesesList) {
             sum += fitnes;

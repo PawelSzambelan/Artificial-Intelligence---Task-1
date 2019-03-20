@@ -6,7 +6,7 @@ public class Item implements Comparable {
     private int cityNumber;
     private double takingCriterion;
 
-    public Item(int index, int profit, int weight, int cityNumber) {
+    Item(int index, int profit, int weight, int cityNumber) {
         this.index = index;
         this.profit = profit;
         this.weight = weight;
@@ -15,11 +15,11 @@ public class Item implements Comparable {
         takingCriterion = (double) profit / (double) weight;
     }
 
-    public int getCityNumber() {
+    int getCityNumber() {
         return cityNumber;
     }
 
-    public double getTakingCriterion() {
+    private double getTakingCriterion() {
         return takingCriterion;
     }
 

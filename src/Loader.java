@@ -10,13 +10,13 @@ import java.util.Stack;
 
 public class Loader {
 
-    public void loadEverything(String fileName, List<City> listOfCities, List<Item> listOfItems) throws IOException {
+    void loadEverything(String fileName, List<City> listOfCities, List<Item> listOfItems) throws IOException {
         loadCitiesFromFile(fileName,listOfCities);
         loadItemsFromFile(fileName,listOfItems);
         loadItemsToCities(listOfCities,listOfItems);
     }
 
-    public void loadCitiesFromFile(String fileName, List<City> listOfCities) throws FileNotFoundException {
+    private void loadCitiesFromFile(String fileName, List<City> listOfCities) throws FileNotFoundException {
 
         String startLine = "NODE_COORD_SECTION	(INDEX, X, Y): ";
         String endLine = "ITEMS SECTION	(INDEX, PROFIT, WEIGHT, ASSIGNED NODE NUMBER): ";
@@ -48,7 +48,7 @@ public class Loader {
         }
     }
 
-    public int[][] creatingMatrix(List<City> cities) {
+    int[][] creatingMatrix(List<City> cities) {
 
         //System.out.println("\nDistances matrix");
         int matrixSize = cities.size();
@@ -64,7 +64,7 @@ public class Loader {
         return matrix_of_distances;
     }
 
-    public void loadItemsFromFile(String fileName, List<Item> listOfItems) throws FileNotFoundException {
+    private void loadItemsFromFile(String fileName, List<Item> listOfItems) throws FileNotFoundException {
 
         String startLine = "ITEMS SECTION	(INDEX, PROFIT, WEIGHT, ASSIGNED NODE NUMBER): ";
 
@@ -94,7 +94,7 @@ public class Loader {
         }
     }
 
-    public int loadKnapsackCapacity(String fileName) throws IOException {
+    int loadKnapsackCapacity(String fileName) throws IOException {
 
         String lines[];
         String line = Files.readAllLines(Paths.get(fileName)).get(4);
@@ -102,7 +102,7 @@ public class Loader {
         return Integer.parseInt(lines[1]);
     }
 
-    public double loadMaxSpeed(String fileName) throws IOException {
+    double loadMaxSpeed(String fileName) throws IOException {
 
         String lines[];
         String line = Files.readAllLines(Paths.get(fileName)).get(6);
@@ -110,7 +110,7 @@ public class Loader {
         return Double.parseDouble(lines[1]);
     }
 
-    public double loadMinSpeed(String fileName) throws IOException {
+    double loadMinSpeed(String fileName) throws IOException {
 
         String lines[];
         String line = Files.readAllLines(Paths.get(fileName)).get(5);
@@ -118,7 +118,7 @@ public class Loader {
         return Double.parseDouble(lines[1]);
     }
 
-    public void loadItemsToCities(List<City> listOfCities, List<Item> listOfItems) {
+    private void loadItemsToCities(List<City> listOfCities, List<Item> listOfItems) {
         for (City city : listOfCities) {
             city.loadItems(listOfItems);
         }

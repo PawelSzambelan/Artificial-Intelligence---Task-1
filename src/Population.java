@@ -12,10 +12,4 @@ public class Population {
         }
     }
 
-    public void printingPopulation() {
-        for (Thief thief : thievesPopulation) {
-            System.out.println(thief.road);
-        }
-    }
-
 }

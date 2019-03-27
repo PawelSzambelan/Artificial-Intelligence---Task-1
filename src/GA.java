@@ -1,9 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 class GA {
 
@@ -57,7 +54,7 @@ class GA {
 
     private List<Thief> tournament(List<Double> listOfFitnesResults, List<Thief> thievesPopulation) {
 
-        int Tour = 5;
+        int Tour = 10;
         List<Thief> listOf2ThieviesToCrossover = new ArrayList<>();
         int thievesCountToTakeToCrossover = 2;
 
@@ -95,7 +92,7 @@ class GA {
         return listOf2ThieviesToCrossover;
     }
 
-    public List<Thief> roulette(List<Double> listOfFitnesResults, List<Thief> thievesPopulation) {
+    private List<Thief> roulette(List<Double> listOfFitnesResults, List<Thief> thievesPopulation) {
 
         List<Double> copyOfFitneses = new ArrayList<>();
         copyOfFitneses.addAll(listOfFitnesResults);
@@ -112,7 +109,7 @@ class GA {
             for (int k = 0; k < copyOfFitneses.size(); k++) {
                 double fitnes = copyOfFitneses.get(k);
                 fitnes -= min;
-                copyOfFitneses.set(k,fitnes);
+                copyOfFitneses.set(k, fitnes);
                 fitnesSum += fitnes;
             }
 
@@ -138,7 +135,7 @@ class GA {
     }
 
     private void crossover(List<Thief> TwoThievesToCross) {
-        double Px = 0.7;
+        double Px = 0.8;
         Random rand = new Random();
 
         if (rand.nextDouble() < Px) { // <-- 70% of the time.
@@ -159,7 +156,6 @@ class GA {
             // instantiate two child tours
             Thief child1 = new Thief();
             Thief child2 = new Thief();
-
 
             // add the sublist in between the start and end points to the children
             child1.road.addAll(parent1.road.subList(start, end));
@@ -196,9 +192,6 @@ class GA {
             child1.road.add(child1.road.get(0));
             child2.road.add(child2.road.get(0));
 
-            // copy the parents from the children back into the parents, because crossover functions are in-place!
-//            Collections.copy(parent1.road, child2.road);
-//            Collections.copy(parent2.road, child1.road);
             TwoThievesToCross.clear();
             TwoThievesToCross.add(child1);
             TwoThievesToCross.add(child2);
@@ -206,7 +199,7 @@ class GA {
     }
 
     private void swapMutation(List<Thief> ThievesList) {
-        double Pm = 0.01;
+        double Pm = 0.1;
         Random rand = new Random();
 
         for (Thief thief : ThievesList) {
@@ -230,7 +223,7 @@ class GA {
         }
     }
 
-    void geneticAlgorithm(List<City> listOfCities, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
+    void geneticAlgorithmWithTournament(List<City> listOfCities, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
 
         List<List<Double>> list_with_all_populations_fitneses = new ArrayList<>();
         int gen = 100;
@@ -261,9 +254,7 @@ class GA {
             System.out.println(Collections.max(listOfFitnesResults));
         }
 
-        System.out.println(list_with_all_populations_fitneses.get(list_with_all_populations_fitneses.size() - 1).get(99));
         listToFile(list_with_all_populations_fitneses);
-
     }
 
     void geneticAlgorithmWithRoulette(List<City> listOfCities, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
@@ -297,9 +288,7 @@ class GA {
             System.out.println(Collections.max(listOfFitnesResults));
         }
 
-        //System.out.println(list_with_all_populations_fitneses.get(list_with_all_populations_fitneses.size() - 1).get(99));
         listToFile(list_with_all_populations_fitneses);
-
     }
 
     private void listToFile(List<List<Double>> list_with_all_populations_fitneses) {
@@ -348,6 +337,108 @@ class GA {
         return sum / fitnesesList.size();
     }
 
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------NOT EVOLUTIONARY METHOD-------------------------
+
+    //by nearest neighbour
+    void tsp(int distancesMatrix[][], List<City> listOfCities, int knapsackCapacity, double maxSpeed, double minSpeed) {
+
+//        System.out.println("\nCities in visited order:");
+        int totalRoute = 0;
+        int numberOfCities;
+        Stack<Integer> stack = new Stack<>();
+        Thief thief = new Thief();
+
+
+        numberOfCities = distancesMatrix[0].length - 1;
+        int[] visited = new int[numberOfCities];
+        visited[0] = listOfCities.get(0).getCityNumber();  //start with first city
+        stack.push(listOfCities.get(0).getCityNumber());
+        int element, destination = 0, i, min;
+        boolean minFlag = false;
+//        System.out.print(listOfCities.get(0).getCityNumber() + "\t");
+        thief.road.add(listOfCities.get(0).getCityNumber());
+
+        while (!stack.isEmpty()) {
+            element = stack.peek();
+            i = 0;
+            min = Integer.MAX_VALUE;
+            while (i <= numberOfCities - 1) {
+                if (distancesMatrix[element][i + 1] > 1 && visited[i] == 0) {
+                    if (min > distancesMatrix[element][i + 1]) {
+                        min = distancesMatrix[element][i + 1];
+                        destination = i + 1;
+                        minFlag = true;
+                    }
+                }
+                i++;
+            }
+            if (minFlag) {
+                totalRoute += min;
+                visited[destination - 1] = 1;
+                stack.push(destination);
+//                System.out.print(destination + "\t");
+                thief.road.add(destination);
+                minFlag = false;
+                continue;
+            }
+            stack.pop();
+        }
+        thief.road.add(listOfCities.get(0).getCityNumber());
+//        System.out.println("\nTotal route = " + totalRoute);
+
+
+
+        double FitnessResult = 0;
+        double roadTime =0;
+        int distance;
+        double actualSpeed;
+        int actualKnapsackWeight =0;
+        int itemsWeightSum=0;
+
+        //for loop from one city to another
+        for (int j = 0; j < thief.road.size() - 1; j++) {
+
+            distance = distancesMatrix[thief.road.get(j)][thief.road.get(j + 1)];
+
+            //add item to knapsack
+            //check if there is an item in the city and if actualKnapsackWeight + future item weight still less than knapsack capacity
+            if ((listOfCities.get(thief.road.get(j) - 1).listOfItems.size() != 0) &&
+                    (actualKnapsackWeight + listOfCities.get(thief.road.get(j) - 1).listOfItems.get(0).getWeight()) <= knapsackCapacity) {
+                Item temporaryItem = listOfCities.get(thief.road.get(j) - 1).listOfItems.get(0);
+                thief.knapsack.add(temporaryItem);
+                actualKnapsackWeight += temporaryItem.getWeight();
+            }
+
+            actualSpeed = maxSpeed - ((double) actualKnapsackWeight * (maxSpeed - minSpeed) / (double) knapsackCapacity);
+            roadTime += (double) distance / actualSpeed;
+        }
+
+        for (Item item : thief.knapsack) {
+            itemsWeightSum += item.getWeight();
+        }
+        FitnessResult = (itemsWeightSum - roadTime);
+        System.out.println("Fitness = " + FitnessResult);
+    }
+
+
+    void tspWithRandomRoad(List<City> listOfCities, int[][] distancesMatrix, int knapsackCapacity, double maxSpeed, double minSpeed) {
+
+        List<List<Double>> list_with_all_populations_fitneses = new ArrayList<>();
+
+        //population
+        Population population = new Population();
+        population.initialise(listOfCities);
+
+        calculatingFitnesForPopulation(listOfCities, population.thievesPopulation, distancesMatrix, knapsackCapacity, maxSpeed, minSpeed);
+        list_with_all_populations_fitneses.add(listOfFitnesResults);
+
+        System.out.println("Fitness max = " + Collections.max(listOfFitnesResults));
+        listToFile(list_with_all_populations_fitneses);
+
+    }
 }
 
 
